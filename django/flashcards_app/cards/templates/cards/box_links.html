@@ -1,0 +1,7 @@
+{% load humanize %}
+
+{% for stage in stagees %}
+    <a href="{% url 'stage' stage_num=stage.number %}">
+         {{ stage.number | ordinal }} Stage <mark>{{ stage.card_count }}</mark>
+    </a>
+{% endfor %}
