@@ -2,6 +2,7 @@ from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.hashers import make_password
 
 
 class UserManager(BaseUserManager):
@@ -13,7 +14,10 @@ class UserManager(BaseUserManager):
             raise ValueError("Cannot create a user with no email.")
         email = self.normalize_email(email)
         user = self.model(email=email, **extra)
-        user.set_password(password)
+        # hash the password
+        hashed_password = make_password(password)
+        user.password = hashed_password
+
         user.save(using=self._db)
         return user
 
