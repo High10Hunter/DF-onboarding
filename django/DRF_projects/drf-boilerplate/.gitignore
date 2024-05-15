@@ -1,0 +1,21 @@
+__pycache__/
+*.py[cod]
+*$py.class
+
+staticfiles/
+
+docs/_build/
+
+target/
+
+# pyenv
+.python-version
+
+# Environments
+.venv
+venv/
+ENV/
+
+*.DS_Store
+
+.pytest_cache

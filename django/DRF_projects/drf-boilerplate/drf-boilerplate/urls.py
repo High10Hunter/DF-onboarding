@@ -5,6 +5,7 @@ from rest_framework_simplejwt import views as jwt_views
 
 from students.urls import students_router
 from modules.urls import modules_router
+from users.urls import users_router
 
 # Swagger
 from rest_framework import permissions
@@ -22,15 +23,16 @@ schema_view = get_schema_view(
 
 router = DefaultRouter()
 
-router.registry.extend(students_router.registry)
+router.registry.extend(users_router.registry)
 router.registry.extend(modules_router.registry)
+router.registry.extend(students_router.registry)
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path(
         "api/v1/token/",
         jwt_views.TokenObtainPairView.as_view(),
-        name="token_obtain_pair",
+        name="login",
     ),
     path(
         "api/v1/token/refresh/",

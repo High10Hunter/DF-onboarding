@@ -6,7 +6,7 @@ newrelic==6.4.0.157
 django-dotenv==1.4.2
 django-3-jet==1.0.8
 celery==4.4.7
-djoser==2.2.2
+djoser==2.1.0
 
 # For the persistence stores
 psycopg2==2.8.6

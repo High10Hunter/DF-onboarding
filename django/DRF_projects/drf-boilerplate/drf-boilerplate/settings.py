@@ -15,16 +15,14 @@ if not TESTING:
     dotenv.read_dotenv(ROOT_DIR)
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-SITE_URL = os.getenv("SITE_URL", "http://localhost:8000")
+SITE_URL = "http://localhost:8000"
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv(
-    "DJANGO_SECRET_KEY", "#p7&kxb7y^yq8ahfw5%$xh=f8=&1y*5+a5($8w_f7kw!-qig(j"
-)
+SECRET_KEY = "#p7&kxb7y^yq8ahfw5%$xh=f8=&1y*5+a5($8w_f7kw!-qig(j"
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -45,6 +43,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "students",
     "modules",
+    "users",
     "drf_yasg",
     "djoser",
 ]
@@ -146,20 +145,36 @@ REST_FRAMEWORK = {
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
-    "PAGE_SIZE": os.getenv("PAGE_SIZE", 10),
+    "PAGE_SIZE": 10,
 }
+
+# auth config
+AUTH_USER_MODEL = "users.User"
+
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = "email"
 
 # Simple JWT settings
 SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("Bearer",),
     "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=2),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+    "ROTATE_REFRESH_TOKENS": False,
+    "BLACKLIST_AFTER_ROTATION": True,
+    "ALGORITHM": "HS256",
+    "SIGNING_KEY": "t3llqPQAgIfXbfFwlChpujYOFsjXz2sI",
+    "VERIFYING_KEY": None,
+    "USER_ID_FIELD": "id",
+    "USER_ID_CLAIM": "user_id",
+    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
+    "TOKEN_TYPE_CLAIM": "token_type",
 }
 
 # YASG settings
 SWAGGER_SETTINGS = {
     "SECURITY_DEFINITIONS": {
-        "Basic": {"type": "basic"},
         "Bearer": {"type": "apiKey", "name": "Authorization", "in": "header"},
     },
 }

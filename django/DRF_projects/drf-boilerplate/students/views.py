@@ -1,5 +1,3 @@
-from rest_framework.pagination import LimitOffsetPagination
-
 from utils.pagination.custorm_pagination import CustomPagination
 from .models import Student
 from .serializers import (
@@ -26,7 +24,6 @@ class StudentsApiView(
         "update": UpdateStudentSerializer,
         "partial_update": UpdateStudentSerializer,
     }
-    # pagination_class = LimitOffsetPagination
     pagination_class = CustomPagination
     permission_classes = [IsAuthenticated]
 
