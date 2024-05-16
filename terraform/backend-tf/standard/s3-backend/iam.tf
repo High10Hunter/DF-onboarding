@@ -27,25 +27,22 @@ resource "aws_iam_policy" "policy" {
   policy = data.aws_iam_policy_document.policy_doc.json
 }
 
-resource "aws_iam_role" "iam_role" {
-  name = "${title(var.project)}S3BackendRole"
+data "aws_iam_policy_document" "assume_role_policy" {
+  statement {
+    actions = ["sts:AssumeRole"]
+    effect  = "Allow"
 
-  assume_role_policy = <<-EOF
-  {
-    "Version": "2012-10-17",
-    "Statement": [
-      {
-        "Action": "sts:AssumeRole",
-        "Principal": {
-        "AWS": ${jsonencode(local.principal_arns)}
-      },
-      "Effect": "Allow"
-      }
-    ]
+    principals {
+      type        = "AWS"
+      identifiers = local.principal_arns
+    }
   }
-  EOF
+}
 
-  tags = local.tags
+resource "aws_iam_role" "iam_role" {
+  name               = "${title(var.project)}S3BackendRole"
+  assume_role_policy = data.aws_iam_policy_document.assume_role_policy.json
+  tags               = local.tags
 }
 
 resource "aws_iam_role_policy_attachment" "policy_attach" {
